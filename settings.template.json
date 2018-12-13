@@ -1,0 +1,12 @@
+{
+    "username" : "<the user name>",
+    "password" : "<the password>",
+    "domain" : "<the domain>",
+    "headlessWindowsServerOperatingSystem" : "<the name of the headless Windows Server image to use>",
+    "serverWindowsOperatingSystem": "<the name of the headless Windows Service image to use>",
+    "clientWindowsOperatingSystem": "<the name of the Windows desktop image to use>",
+    "virtualMachinesFolder": "<the name of the folder where to store the virtual machines>",
+    "sqlServerIsoFile": "<the name of the sql server iso file that should be in the LabSources under the ISOs folder>",
+    "ssmsInstallerFile": "<the name of the SSMS installer file that should be in the LabSources under the ISOs folder>",
+    "reportingServicesInstallerFile": "<the name of the Reporting Services installer file that should be in the LabSources under the ISOs folder>"
+}
