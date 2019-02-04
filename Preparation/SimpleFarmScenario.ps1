@@ -10,7 +10,7 @@ $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.
 
 $labName = 'SimpleFarmLab'
 $labPrefix = "SF"
-$addressSpace = '192.168.80.0/24'
+$addressSpace = '192.168.90.0/24'
 $vmFolder = $settings.virtualMachinesFolder
 $guiServerImage = $settings.serverWindowsOperatingSystem
 $clientImage = $settings.clientWindowsOperatingSystem
@@ -43,9 +43,9 @@ Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC
 
 # add needed machines
 # add a server with a GUI because some things are hard to accomplish in PowerShell
-Add-LabMachineDefinition -Name "$($labPrefix)APPSRV01" -OperatingSystem $guiServerImage 
-Add-LabMachineDefinition -Name "$($labPrefix)APPSRV02"
-Add-LabMachineDefinition -Name "$($labPrefix)APPSRV03"
+ Add-LabMachineDefinition -Name "$($labPrefix)APPSRV01" -OperatingSystem $guiServerImage 
+ Add-LabMachineDefinition -Name "$($labPrefix)APPSRV02"
+ Add-LabMachineDefinition -Name "$($labPrefix)APPSRV03"
 
 Add-LabMachineDefinition -Name "$($labPrefix)SQLSRV01" -OperatingSystem $guiServerImage
 Add-LabMachineDefinition -Name "$($labPrefix)SQLSRV02"

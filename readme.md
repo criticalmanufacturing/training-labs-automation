@@ -12,4 +12,8 @@ The installation procedure is documented [here](https://github.com/AutomatedLab/
 
 ## Getting started
 
-Before running the scripts on this folder copy the **settings.template.json** file, name it **settings.user.json** and populate the settings inside. The repository is configured to ignore this file to prevent users from accidentally committing sensitive information to github. I also use this file to setup the windows image names to use to create the virtual machines. The names vary if we are using trial versions or regular versions. 
+Before running the scripts on this folder copy the **settings.template.json** file, name it **settings.user.json** and populate the settings inside. The repository is configured to ignore this file to prevent users from accidentally committing sensitive information to github. I also use this file to setup the windows image names to use to create the virtual machines. The names vary if we are using trial versions or regular versions.
+
+Afterwards heap up to the Preparation folder and select one of the scenario scripts. Each one of this scripts will prepare one or more virtual machines on your hyper-v system.
+
+Also included are examples of automating software pre-requisites installation. In SingleNode you will find an example for a single server system (besides the domain controller) and on the SimpleFarm you will find examples of installing SQL Server and Windows Fail Over Cluster on multiple machines.
