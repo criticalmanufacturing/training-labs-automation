@@ -30,8 +30,7 @@ Add-LabDomainDefinition -Name $domain -AdminUser $user -AdminPassword $password
 ######################################################
 # setup networking
 ######################################################
-Add-LabVirtualNetworkDefinition -Name "$labPrefix$labName"  -AddressSpace $addressSpace
-Add-LabVirtualNetworkDefinition -Name 'Default Switch' -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'Ethernet' }
+Add-LabVirtualNetworkDefinition -Name "$labPrefix$labName"  -AddressSpace $addressSpace -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'Ethernet' }
 
 ######################################################
 #defining default parameter values, as these ones are the same for all the machines
@@ -41,29 +40,28 @@ $PSDefaultParameterValues = @{
     'Add-LabMachineDefinition:Network' = "$labPrefix$labName"
     'Add-LabMachineDefinition:DomainName' = $domain
     'Add-LabMachineDefinition:Memory' = 1GB
-    'Add-LabMachineDefinition:OperatingSystem' = $serverImage
+    'Add-LabMachineDefinition:OperatingSystem' = $guiServerImage
 }
 
 ######################################################
 # domain controller
 ######################################################
 
-Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC
-
 ######################################################
 # add network
 ######################################################
 $netAdapter = @()
-$netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch "$labPrefix$labName"
-$netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch 'Default Switch' -UseDhcp
-Add-LabMachineDefinition -Name "$($labPrefix)ROUTER" -Roles Routing  -NetworkAdapter $netAdapter
+$netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch "$labPrefix$labName" -UseDhcp
+
+Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC, Routing  -NetworkAdapter $netAdapter
+
 
 ######################################################
 # add needed machines
 ######################################################
 
 # add a server with a GUI because some things are hard to accomplish in PowerShell
-Add-LabMachineDefinition -Name "$($labPrefix)APPSRV01" -OperatingSystem $guiServerImage -MinMemory 1GB -MaxMemory 8GB
+Add-LabMachineDefinition -Name "$($labPrefix)APPSRV01" -MinMemory 1GB -MaxMemory 8GB
 
 # Execute it
 Install-Lab
