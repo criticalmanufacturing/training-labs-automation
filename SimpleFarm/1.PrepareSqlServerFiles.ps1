@@ -26,3 +26,5 @@ foreach ($sqlServer in $sqlServers)
         Dismount-DiskImage -ImagePath $isoFile
     }
 }
+
+Checkpoint-LabVM -All -SnapshotName 'Before Installation'

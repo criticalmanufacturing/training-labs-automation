@@ -12,8 +12,10 @@ The installation procedure is documented [here](https://github.com/AutomatedLab/
 
 ## Getting started
 
-Before running the scripts on this folder copy the **settings.template.json** file, name it **settings.user.json** and populate the settings inside. The repository is configured to ignore this file to prevent users from accidentally committing sensitive information to github. I also use this file to setup the windows image names to use to create the virtual machines. The names vary if we are using trial versions or regular versions.
+Before running the scripts on this folder copy the **settings.template.json** file, name it **settings.user.json** and populate the settings inside. The repository is configured to ignore this file to prevent users from accidentally committing sensitive information to github. I also use this file to setup the windows image names to use to create the virtual machines. The names vary if we are using trial versions or regular versions.We currently support a Single Node and a Simple Farm. Those scenarios are documented bellow.
 
-Afterwards heap up to the Preparation folder and select one of the scenario scripts. Each one of this scripts will prepare one or more virtual machines on your hyper-v system.
+The scripts are prefixed with a number that indicates the order that they should be run. The 0 script always configures the AutomatedLab environment. If you are running the scripts manually there are important notes within the script on how it should be run. If you are using the orchestration script that it takes care of those details for you.
 
-Also included are examples of automating software pre-requisites installation. In SingleNode you will find an example for a single server system (besides the domain controller) and on the SimpleFarm you will find examples of installing SQL Server and Windows Fail Over Cluster on multiple machines.
+### Single Node
+
+In this scenario we setup a domain controller and a server that will host all the application tiers. The domain controller is required because starting from SQL Server 2017 it is not longer possible to install SSRS on a node that is a domain controller.

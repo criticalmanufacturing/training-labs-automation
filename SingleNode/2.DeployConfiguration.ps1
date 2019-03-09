@@ -108,8 +108,11 @@ Configuration SQLInstall
 
 $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
 $password = $settings.password | ConvertTo-SecureString  -AsPlainText -Force
-$adminCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'cmflab\administrator', $password 
+$sqlPassword = $settings.sqlPassword | ConvertTo-SecureString  -AsPlainText -Force
+$adminCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList "$($settings.shortDomain)\$($settings.username)", $password 
 $saCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'sa', $password 
+$sqlUserCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $settings.sqlUser, $sqlPassword
+
 
 $ConfigurationData = @{
     AllNodes = @(
@@ -121,6 +124,8 @@ $ConfigurationData = @{
             SAPassword                  = $saCredential
             SSMSInstallerFile           = $settings.ssmsInstallerFile
             RSInstallerFile             = $settings.reportingServicesInstallerFile
+            SQLUserName                 = $settings.sqlUser
+            SQLUserCredential           = $sqlUserCredential
         }
     )
     PSDscAllowPlainTextPassword = $True
