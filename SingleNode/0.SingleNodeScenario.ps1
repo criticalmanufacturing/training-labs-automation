@@ -30,7 +30,7 @@ Add-LabDomainDefinition -Name $domain -AdminUser $user -AdminPassword $password
 ######################################################
 # setup networking
 ######################################################
-Add-LabVirtualNetworkDefinition -Name "$labPrefix$labName"  -AddressSpace $addressSpace -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'Ethernet' }
+Add-LabVirtualNetworkDefinition -Name "$labPrefix$labName" -AddressSpace $addressSpace -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'Ethernet' }
 
 ######################################################
 #defining default parameter values, as these ones are the same for all the machines
@@ -50,11 +50,7 @@ $PSDefaultParameterValues = @{
 ######################################################
 # add network
 ######################################################
-$netAdapter = @()
-$netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch "$labPrefix$labName" -UseDhcp
-
-Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC, Routing  -NetworkAdapter $netAdapter
-
+Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC
 
 ######################################################
 # add needed machines
