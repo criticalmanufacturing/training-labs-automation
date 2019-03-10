@@ -134,3 +134,6 @@ $ConfigurationData = @{
 
 Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) `
    -ConfigurationData $ConfigurationData -ComputerName SNAPPSRV01
+
+Restart-LabVM -ComputerName SNAPPSRV01
+

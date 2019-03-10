@@ -1,14 +1,10 @@
 <#
 
 #>
-function Get-ConfigSet()
-{
-	return Get-WmiObject –namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
-		-class MSReportServer_ConfigurationSetting -ComputerName localhost
-}
 
 # Retrieve the current configuration
-$configset = Get-ConfigSet
+$configset = Get-WmiObject –namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
+-class MSReportServer_ConfigurationSetting -ComputerName localhost
 
 $configset
 
@@ -21,7 +17,7 @@ If (! $configset.IsInitialized)
 	Import-Module sqlps -DisableNameChecking | Out-Null
 
 	# Establish a connection to the database server (localhost)
-	$conn = New-Object Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList $env:ComputerName
+	$conn = New-Object Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList "$env:ComputerName\\ODS"
 	$conn.ApplicationName = "SSRS Configuration Script"
 	$conn.StatementTimeout = 0
 	$conn.Connect()
@@ -53,7 +49,8 @@ If (! $configset.IsInitialized)
 	$configset.SetServiceState($true, $true, $true)
 
 	# Update the current configuration
-	$configset = Get-ConfigSet
+	$configset = Get-WmiObject –namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
+	-class MSReportServer_ConfigurationSetting -ComputerName localhost
 
 	# Output to screen
 	$configset.IsReportManagerEnabled
