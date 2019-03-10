@@ -1,6 +1,6 @@
 $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
 
-$computerNames = @('SNAPPSRV01')
+$ComputerNames = @('SNAPPSRV01','SNAPPSRV02','SNAPPSRV03','SNAPPSRV04','SNAPPSRV05','SNAPPSRV06','SNAPPSRV07','SNAPPSRV08','SNAPPSRV09','SNAPPSRV10','SNAPPSRV11','SNAPPSRV12')
 
 Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Prepare SQL Server Distribution Media' -ScriptBlock {
     # Retrieve the current configuration
