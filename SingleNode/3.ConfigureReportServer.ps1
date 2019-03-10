@@ -4,7 +4,7 @@ $ComputerNames = @('SNAPPSRV01','SNAPPSRV02','SNAPPSRV03','SNAPPSRV04','SNAPPSRV
 
 Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Configure Report Server' -ScriptBlock {
     # Retrieve the current configuration
-    $configset = Get-WmiObject –namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
+    $configset = Get-WmiObject -namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
         -class MSReportServer_ConfigurationSetting -ComputerName localhost
 
     $configset
@@ -17,7 +17,7 @@ Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Configure Report S
         Import-Module sqlps -DisableNameChecking | Out-Null
 
         # Establish a connection to the database server (localhost)
-        $conn = New-Object Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList "$env:ComputerName\\ODS"
+        $conn = New-Object Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList "$env:ComputerName\ODS"
         $conn.ApplicationName = "SSRS Configuration Script"
         $conn.StatementTimeout = 0
         $conn.Connect()
@@ -32,7 +32,7 @@ Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Configure Report S
         $db.ExecuteNonQuery($dbscript)
 
         # Set the database connection info
-        $configset.SetDatabaseConnection("(local)", "ReportServer", 2, "", "")
+        $configset.SetDatabaseConnection("$env:ComputerName\ODS", "ReportServer", 2, "", "")
 
         $configset.SetVirtualDirectory("ReportServerWebService", "ReportServer", 1033)
         $configset.ReserveURL("ReportServerWebService", "http://+:80", 1033)
