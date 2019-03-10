@@ -2,14 +2,16 @@
 $labSourcesLocation = Get-LabSourcesLocation
 $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
 
-Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.sqlServerIsoFile)" ) -ComputerName SNAPPSRV01 -DestinationFolderPath C:\Temp
-Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.ssmsInstallerFile)" ) -ComputerName SNAPPSRV01 -DestinationFolderPath C:\Temp
-Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.reportingServicesInstallerFile)" ) -ComputerName SNAPPSRV01 -DestinationFolderPath C:\Temp
+$ComputerNames = @('SNAPPSRV01','SNAPPSRV02','SNAPPSRV03','SNAPPSRV04','SNAPPSRV05','SNAPPSRV06','SNAPPSRV07','SNAPPSRV08','SNAPPSRV09','SNAPPSRV10','SNAPPSRV11','SNAPPSRV12')
+
+Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.sqlServerIsoFile)" ) -ComputerName $ComputerNames -DestinationFolderPath C:\Temp
+Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.ssmsInstallerFile)" ) -ComputerName $ComputerNames -DestinationFolderPath C:\Temp
+Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.reportingServicesInstallerFile)" ) -ComputerName $ComputerNames -DestinationFolderPath C:\Temp
 
 $destinationIsoFileLocation = "C:\temp\$($settings.sqlServerIsoFile)"
 Write-Host "ISO File will be at '$destinationIsoFileLocation'"
 
-Invoke-LabCommand -ComputerName SNAPPSRV01 -ActivityName 'Prepare SQL Server Distribution Media' -ArgumentList $destinationIsoFileLocation -ScriptBlock {
+Invoke-LabCommand -ComputerName $ComputerNames  -ActivityName 'Prepare SQL Server Distribution Media' -ArgumentList $destinationIsoFileLocation -ScriptBlock {
     param
     (
         [string]$isoFile

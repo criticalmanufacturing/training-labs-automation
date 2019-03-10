@@ -132,5 +132,7 @@ $ConfigurationData = @{
     PSDscAllowDomainUser = $true      
 }
 
+$ComputerNames = @('SNAPPSRV01','SNAPPSRV02','SNAPPSRV03','SNAPPSRV04','SNAPPSRV05','SNAPPSRV06','SNAPPSRV07','SNAPPSRV08','SNAPPSRV09','SNAPPSRV10','SNAPPSRV11','SNAPPSRV12')
+
 Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) `
-   -ConfigurationData $ConfigurationData -ComputerName SNAPPSRV01
+   -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
