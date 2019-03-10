@@ -24,7 +24,7 @@ The scenaros depend on SqlServerDsc so you need to do on an elevated powershell:
 
 ### Single Node
 
-In this scenario we setup a domain controller and a server that will host all the application tiers. The domain controller is required because starting from SQL Server 2017 it is not longer possible to install SSRS on a node that is a domain controller.
+In this scenario we setup a domain controller and a server per trainee that will host all the application tiers. The domain controller is required because starting from SQL Server 2017 it is not longer possible to install SSRS on a node that is a domain controller.
 
 ### Simple Farm
 
