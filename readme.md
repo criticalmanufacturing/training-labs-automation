@@ -16,7 +16,7 @@ Before running the scripts on this folder copy the **settings.template.json** fi
 
 The scripts are prefixed with a number that indicates the order that they should be run. The 0 script always configures the AutomatedLab environment. If you are running the scripts manually there are important notes within the script on how it should be run. If you are using the orchestration script that it takes care of those details for you.
 
-The scenaros depend on SqlServerDsc so you need to do on an elevated powershell:
+The scenarios depend on SqlServerDsc so you need to do on an elevated powershell:
 
 ``` PowerShell
     Install-Module SqlServerDsc
