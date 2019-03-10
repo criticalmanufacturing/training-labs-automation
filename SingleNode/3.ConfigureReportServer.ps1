@@ -4,7 +4,7 @@ $ComputerNames = @('SNAPPSRV01','SNAPPSRV02','SNAPPSRV03','SNAPPSRV04','SNAPPSRV
 
 Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Prepare SQL Server Distribution Media' -ScriptBlock {
     # Retrieve the current configuration
-    $configset = Get-WmiObject –namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
+    $configset = Get-WmiObject -namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
         -class MSReportServer_ConfigurationSetting -ComputerName localhost
 
     $configset
@@ -17,7 +17,7 @@ Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Prepare SQL Server
         Import-Module sqlps -DisableNameChecking | Out-Null
 
         # Establish a connection to the database server (localhost)
-        $conn = New-Object Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList "$env:ComputerName\\ODS"
+        $conn = New-Object Microsoft.SqlServer.Management.Common.ServerConnection -ArgumentList "$env:ComputerName\ODS"
         $conn.ApplicationName = "SSRS Configuration Script"
         $conn.StatementTimeout = 0
         $conn.Connect()
