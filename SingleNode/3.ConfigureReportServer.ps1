@@ -2,7 +2,7 @@ $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.
 
 $ComputerNames = @('SNAPPSRV01','SNAPPSRV02','SNAPPSRV03','SNAPPSRV04','SNAPPSRV05','SNAPPSRV06','SNAPPSRV07','SNAPPSRV08','SNAPPSRV09','SNAPPSRV10','SNAPPSRV11','SNAPPSRV12')
 
-Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Prepare SQL Server Distribution Media' -ScriptBlock {
+Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Configure Report Server' -ScriptBlock {
     # Retrieve the current configuration
     $configset = Get-WmiObject –namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" `
         -class MSReportServer_ConfigurationSetting -ComputerName localhost
