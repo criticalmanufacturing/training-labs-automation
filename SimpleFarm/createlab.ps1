@@ -15,6 +15,7 @@ Write-Host "Installing and configuring SQL Server"
 Write-Host "==========================================="
 
 . .\2.DeployConfiguration.ps1
+
 Restart-LabVM -ComputerName "SFSQLSRV01"
 Restart-LabVM -ComputerName "SFSQLSRV02"
 
