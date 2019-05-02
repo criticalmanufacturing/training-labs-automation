@@ -96,5 +96,6 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
 }
 
 # Execute it
-#Install-Lab
-#Checkpoint-LabVM -All -SnapshotName 'Initial State'
+
+Install-Lab
+Checkpoint-LabVM -All -SnapshotName 'Initial State'

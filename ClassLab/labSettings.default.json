@@ -2,5 +2,6 @@
     "labName" : "ClassRoomLab",
     "addressSpace": "192.168.70.0/24",
     "labPrefix": "CR",
-    "numberOfLabMachines": 8
+    "numberOfLabMachines": 8,
+    "cmfIsoName": "Critical Manufacturing 6.4.0.iso"
 }

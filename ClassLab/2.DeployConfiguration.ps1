@@ -5,105 +5,130 @@ Configuration SQLInstall
     Import-DscResource -ModuleName PSDesiredStateConfiguration    
     Import-DscResource -ModuleName SqlServerDsc
 
-     node localhost
-     {
-          WindowsFeature 'NetFramework45'
-          {
-               Name   = 'NET-Framework-45-Core'
-               Ensure = 'Present'
-          }
+    node localhost
+    {
+        WindowsFeature 'NetFramework45' {
+            Name   = 'NET-Framework-45-Core'
+            Ensure = 'Present'
+        }
 
-          SqlSetup 'OnlineInstance'
-          {
-               InstanceName        = 'ONLINE'
-               Features            = 'SQLENGINE'
-               SourcePath          = 'C:\SQL2017'
-               SQLSysAdminAccounts = @('Administrators')
+        SqlSetup 'OnlineInstance' {
+            InstanceName          = 'ONLINE'
+            Features              = 'SQLENGINE'
+            SourcePath            = 'C:\SQL2017'
+            SQLSysAdminAccounts   = @('Administrators')
 
-               InstallSQLDataDir     = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
-               SQLUserDBDir          = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
-               SQLUserDBLogDir       = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
-               SQLTempDBDir          = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
-               SQLTempDBLogDir       = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
-               SQLBackupDir          = 'C:\STORAGE\ONLINE\MSSQL2017\Backup'               
+            InstallSQLDataDir     = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
+            SQLUserDBDir          = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
+            SQLUserDBLogDir       = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
+            SQLTempDBDir          = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
+            SQLTempDBLogDir       = 'C:\STORAGE\ONLINE\MSSQL2017\Data'
+            SQLBackupDir          = 'C:\STORAGE\ONLINE\MSSQL2017\Backup'               
 
-               SQLSvcAccount         = $Node.adminCredential
-               AgtSvcAccount         = $Node.adminCredential
-               ASSvcAccount          = $Node.adminCredential
+            SQLSvcAccount         = $Node.adminCredential
+            AgtSvcAccount         = $Node.adminCredential
+            ASSvcAccount          = $Node.adminCredential
 
-               SecurityMode          = 'SQL'
-               SAPwd                 = $Node.SAPassword
+            SecurityMode          = 'SQL'
+            SAPwd                 = $Node.SAPassword
 
-               SqlSvcStartupType     = 'Automatic'
-               AgtSvcStartupType     = 'Automatic'
-               AsSvcStartupType      = 'Automatic'
-               BrowserSvcStartupType = 'Automatic'
+            SqlSvcStartupType     = 'Automatic'
+            AgtSvcStartupType     = 'Automatic'
+            AsSvcStartupType      = 'Automatic'
+            BrowserSvcStartupType = 'Automatic'
 
-               SQLCollation          = 'Latin1_General_CI_AS'
+            SQLCollation          = 'Latin1_General_CI_AS'
 
-               UpdateEnabled         = $false
+            UpdateEnabled         = $false
 
-               DependsOn           = '[WindowsFeature]NetFramework45'
-          }
+            DependsOn             = '[WindowsFeature]NetFramework45'
+        }
 
-          SqlSetup 'OdsInstance'
-          {
-               InstanceName          = 'ODS'
-               Features              = 'SQLENGINE,AS'
-               SourcePath            = 'C:\SQL2017'
-               SQLSysAdminAccounts   = @('Administrators')
-               ASSysAdminAccounts    = @('Administrators')
+        SqlSetup 'OdsInstance' {
+            InstanceName          = 'ODS'
+            Features              = 'SQLENGINE,AS'
+            SourcePath            = 'C:\SQL2017'
+            SQLSysAdminAccounts   = @('Administrators')
+            ASSysAdminAccounts    = @('Administrators')
 
-               InstallSQLDataDir     = 'C:\STORAGE\ODS\MSSQL2017\Data'
-               SQLUserDBDir          = 'C:\STORAGE\ODS\MSSQL2017\Data'
-               SQLUserDBLogDir       = 'C:\STORAGE\ODS\MSSQL2017\Data'
-               SQLTempDBDir          = 'C:\STORAGE\ODS\MSSQL2017\Data'
-               SQLTempDBLogDir       = 'C:\STORAGE\ODS\MSSQL2017\Data'
-               SQLBackupDir          = 'C:\STORAGE\ODS\MSSQL2017\Backup'
-               ASConfigDir           = 'C:\STORAGE\ODS\AS2017\Config'
-               ASDataDir             = 'C:\STORAGE\ODS\AS2017\Data'
-               ASLogDir              = 'C:\STORAGE\ODS\AS2017\Log'
-               ASBackupDir           = 'C:\STORAGE\ODS\AS2017\Backup'
-               ASTempDir             = 'C:\STORAGE\ODS\AS2017\Temp'
+            InstallSQLDataDir     = 'C:\STORAGE\ODS\MSSQL2017\Data'
+            SQLUserDBDir          = 'C:\STORAGE\ODS\MSSQL2017\Data'
+            SQLUserDBLogDir       = 'C:\STORAGE\ODS\MSSQL2017\Data'
+            SQLTempDBDir          = 'C:\STORAGE\ODS\MSSQL2017\Data'
+            SQLTempDBLogDir       = 'C:\STORAGE\ODS\MSSQL2017\Data'
+            SQLBackupDir          = 'C:\STORAGE\ODS\MSSQL2017\Backup'
+            ASConfigDir           = 'C:\STORAGE\ODS\AS2017\Config'
+            ASDataDir             = 'C:\STORAGE\ODS\AS2017\Data'
+            ASLogDir              = 'C:\STORAGE\ODS\AS2017\Log'
+            ASBackupDir           = 'C:\STORAGE\ODS\AS2017\Backup'
+            ASTempDir             = 'C:\STORAGE\ODS\AS2017\Temp'
 
-               SQLSvcAccount         = $Node.adminCredential
-               AgtSvcAccount         = $Node.adminCredential
-               ASSvcAccount          = $Node.adminCredential
+            SQLSvcAccount         = $Node.adminCredential
+            AgtSvcAccount         = $Node.adminCredential
+            ASSvcAccount          = $Node.adminCredential
 
-               SecurityMode          = 'SQL'
-               SAPwd                 = $Node.SAPassword
+            SecurityMode          = 'SQL'
+            SAPwd                 = $Node.SAPassword
 
-               SqlSvcStartupType     = 'Automatic'
-               AgtSvcStartupType     = 'Automatic'
-               AsSvcStartupType      = 'Automatic'
-               BrowserSvcStartupType = 'Automatic'
+            SqlSvcStartupType     = 'Automatic'
+            AgtSvcStartupType     = 'Automatic'
+            AsSvcStartupType      = 'Automatic'
+            BrowserSvcStartupType = 'Automatic'
                
-               UpdateEnabled         = $false
-               ASServerMode          = 'MULTIDIMENSIONAL'
+            UpdateEnabled         = $false
+            ASServerMode          = 'MULTIDIMENSIONAL'
 
-               SQLCollation = 'Latin1_General_CI_AS'
+            SQLCollation          = 'Latin1_General_CI_AS'
 
-               DependsOn             = '[WindowsFeature]NetFramework45'
-          }
+            DependsOn             = '[WindowsFeature]NetFramework45'
+        }
 
-          Package SSMS
-          {
-              Ensure                 = 'Present'
-              Name                   = 'SSMS-Setup-ENU'
-              Path                   = "c:\temp\$($node.SSMSInstallerFile)"
-              Arguments              = '/install /passive /norestart'
-              ProductId              = '00BE2F31-85B3-414F-8BAD-01E24FB17541'
-          }
+        SqlServerLogin AddOnlineSqlLogin {
+            Ensure                         = 'Present'
+            Name                           = $Node.SQLUserName
+            LoginType                      = 'SqlLogin'
+            ServerName                     = $Node.NodeName
+            InstanceName                   = $Node.SQLInstanceName
+            LoginCredential                = $Node.SQLUserCredential
+            LoginMustChangePassword        = $false
+            LoginPasswordExpirationEnabled = $false
+            LoginPasswordPolicyEnforced    = $false
+            PsDscRunAsCredential           = $Node.$SqlServiceCredential
 
-          Package RS
-          {
-              Ensure                 = 'Present'
-              Name                   = 'SQLServerReportingServices'
-              Path                   = "c:\temp\$($node.RSInstallerFile)"
-              Arguments              = '/quiet /norestart /IAcceptLicenseTerms /Edition=Eval'
-              ProductId              = 'FC32DB66-DA3A-4521-A6F3-B75491663793'
-          }
-     }
+            DependsOn                      = '[SqlSetup]OnlineInstance'
+        }
+
+        SqlServerLogin AddOdsSqlLogin {
+            Ensure                         = 'Present'
+            Name                           = $Node.SQLUserName
+            LoginType                      = 'SqlLogin'
+            ServerName                     = $Node.NodeName
+            InstanceName                   = $Node.SQLInstanceName
+            LoginCredential                = $Node.SQLUserCredential
+            LoginMustChangePassword        = $false
+            LoginPasswordExpirationEnabled = $false
+            LoginPasswordPolicyEnforced    = $false
+            PsDscRunAsCredential           = $Node.$SqlServiceCredential
+
+            DependsOn                      = '[SqlSetup]OdsInstance'
+        }
+
+        Package SSMS {
+            Ensure    = 'Present'
+            Name      = 'SSMS-Setup-ENU'
+            Path      = "c:\temp\$($node.SSMSInstallerFile)"
+            Arguments = '/install /passive /norestart'
+            ProductId = '00BE2F31-85B3-414F-8BAD-01E24FB17541'
+        }
+
+        Package RS {
+            Ensure    = 'Present'
+            Name      = 'SQLServerReportingServices'
+            Path      = "c:\temp\$($node.RSInstallerFile)"
+            Arguments = '/quiet /norestart /IAcceptLicenseTerms /Edition=Eval'
+            ProductId = 'FC32DB66-DA3A-4521-A6F3-B75491663793'
+        }
+    }
 }
 
 $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
@@ -115,7 +140,7 @@ $sqlUserCredential = New-Object -TypeName System.Management.Automation.PSCredent
 
 
 $ConfigurationData = @{
-    AllNodes = @(
+    AllNodes                    = @(
         @{
             NodeName                    = 'localhost'
             PSDscAllowPlainTextPassword = $true
@@ -129,11 +154,11 @@ $ConfigurationData = @{
         }
     )
     PSDscAllowPlainTextPassword = $True
-    PSDscAllowDomainUser = $true      
+    PSDscAllowDomainUser        = $true      
 }
 
 $labSettingsPath = Join-Path -Path $PSScriptRoot -ChildPath '.\labSettings.user.json'
-if(-Not (Test-Path -Path $labSettingsPath)) {
+if (-Not (Test-Path -Path $labSettingsPath)) {
     $labSettingsPath = Join-Path -Path $PSScriptRoot -ChildPath '.\labSettings.default.json'
 }
 
@@ -142,4 +167,6 @@ $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 $ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
 
 Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) `
-   -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
+    -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
+
+Restart-Computer -ComputerName $ComputerNames
