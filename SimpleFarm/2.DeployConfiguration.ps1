@@ -40,7 +40,7 @@ $ConfigurationData = @{
 }
 
 # for simplicity we deploy the same config to all servers even thought they might be headless
-$sqlServers = @("SFSQLSRV02")
+$sqlServers = @("SFSQLSRV01", "SFSQLSRV02")
 Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) `
     -ConfigurationData $ConfigurationData -ComputerName $sqlServers
 
