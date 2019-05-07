@@ -164,14 +164,7 @@ if (-Not (Test-Path -Path $labSettingsPath)) {
 
 $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 
-Write-Verbose $labSettings -Verbose
-Write-Verbose ($ConfigurationData | ConvertTo-Json )  -Verbose
-
 $ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
-
-Write-Verbose $labSettings -Verbose
-Write-Verbose ($ConfigurationData | ConvertTo-Json )  -Verbose
-Write-Verbose ($ComputerNames | ConvertTo-Json) -Verbose
 
 Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
 
