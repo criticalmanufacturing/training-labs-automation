@@ -98,6 +98,18 @@ Configuration SQLInstall
             DependsOn                      = '[SqlSetup]OnlineInstance'
         }
 
+        SqlServerRole Add_sysadmin_to_online_sql_user
+        {
+            Ensure               = 'Present'
+            ServerRoleName       = 'sysadmin'
+            MembersToInclude     = $Node.SQLUserName
+            ServerName           = $Node.NodeName
+            InstanceName         = 'Online'
+            PsDscRunAsCredential = $SqlAdministratorCredential
+
+            DependsOn            = '[SqlServerLogin]AddOnlineSqlLogin'
+        }
+
         SqlServerLogin AddOdsSqlLogin {
             Ensure                         = 'Present'
             Name                           = $Node.SQLUserName
@@ -111,6 +123,18 @@ Configuration SQLInstall
             PsDscRunAsCredential           = $Node.SqlServiceCredential
 
             DependsOn                      = '[SqlSetup]OdsInstance'
+        }
+
+        SqlServerRole Add_sysadmin_to_ods_sql_user
+        {
+            Ensure               = 'Present'
+            ServerRoleName       = 'sysadmin'
+            MembersToInclude     = $Node.SQLUserName
+            ServerName           = $Node.NodeName
+            InstanceName         = 'ODS'
+            PsDscRunAsCredential = $SqlAdministratorCredential
+
+            DependsOn            = '[SqlServerLogin]AddOdsSqlLogin'
         }
 
         Package SSMS {
@@ -168,4 +192,4 @@ $ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
 
 Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
 
-Restart-Computer -ComputerName $ComputerNames
+Restart-LabVM -ComputerName $ComputerNames

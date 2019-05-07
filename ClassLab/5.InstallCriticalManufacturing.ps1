@@ -16,12 +16,12 @@ $productIso = Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($labSetting
 $manifestTemplate = Join-Path -Path $labSourcesLocation -ChildPath "ISOs\template.json"
 $manifest = (Get-Content $manifestTemplate ) | ConvertFrom-Json
 
-For ($i=3; $i -le $numberOfLabMachines; $i++) {
+For ($i=1; $i -le $numberOfLabMachines; $i++) {
     $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
     $manifest.'Product.SystemName' = "CMF$($i.ToString('00'))"
     $manifest.'Product.Tenant.Name' = "CMF$($i.ToString('00'))"    
     
-    # Mount-LabIsoImage -IsoPath $productIso -ComputerName $machineName
+    Mount-LabIsoImage -IsoPath $productIso -ComputerName $machineName
     $ComputerNames += $machineName
 
     $tmp = New-TemporaryFile
@@ -32,7 +32,7 @@ For ($i=3; $i -le $numberOfLabMachines; $i++) {
     $dir = $tmp.DirectoryName
 
     $file = Join-Path -Path $dir -ChildPath manifest.json
-    Remove-Item $file
+    Remove-Item $file -ErrorAction Ignore
 
     Rename-Item -Path $tmp.FullName -NewName $file
     
