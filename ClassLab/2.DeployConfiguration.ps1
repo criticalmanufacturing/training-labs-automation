@@ -88,12 +88,12 @@ Configuration SQLInstall
             Name                           = $Node.SQLUserName
             LoginType                      = 'SqlLogin'
             ServerName                     = $Node.NodeName
-            InstanceName                   = $Node.SQLInstanceName
+            InstanceName                   = "Online"
             LoginCredential                = $Node.SQLUserCredential
             LoginMustChangePassword        = $false
             LoginPasswordExpirationEnabled = $false
             LoginPasswordPolicyEnforced    = $false
-            PsDscRunAsCredential           = $Node.$SqlServiceCredential
+            PsDscRunAsCredential           = $Node.SqlServiceCredential
 
             DependsOn                      = '[SqlSetup]OnlineInstance'
         }
@@ -103,12 +103,12 @@ Configuration SQLInstall
             Name                           = $Node.SQLUserName
             LoginType                      = 'SqlLogin'
             ServerName                     = $Node.NodeName
-            InstanceName                   = $Node.SQLInstanceName
+            InstanceName                   = "ODS"
             LoginCredential                = $Node.SQLUserCredential
             LoginMustChangePassword        = $false
             LoginPasswordExpirationEnabled = $false
             LoginPasswordPolicyEnforced    = $false
-            PsDscRunAsCredential           = $Node.$SqlServiceCredential
+            PsDscRunAsCredential           = $Node.SqlServiceCredential
 
             DependsOn                      = '[SqlSetup]OdsInstance'
         }
@@ -150,7 +150,7 @@ $ConfigurationData = @{
             SSMSInstallerFile           = $settings.ssmsInstallerFile
             RSInstallerFile             = $settings.reportingServicesInstallerFile
             SQLUserName                 = $settings.sqlUser
-            SQLUserCredential           = $sqlUserCredential
+            SQLUserCredential           = $sqlUserCredential           
         }
     )
     PSDscAllowPlainTextPassword = $True
@@ -164,9 +164,15 @@ if (-Not (Test-Path -Path $labSettingsPath)) {
 
 $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 
+Write-Verbose $labSettings -Verbose
+Write-Verbose ($ConfigurationData | ConvertTo-Json )  -Verbose
+
 $ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
 
-Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) `
-    -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
+Write-Verbose $labSettings -Verbose
+Write-Verbose ($ConfigurationData | ConvertTo-Json )  -Verbose
+Write-Verbose ($ComputerNames | ConvertTo-Json) -Verbose
+
+Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
 
 Restart-Computer -ComputerName $ComputerNames

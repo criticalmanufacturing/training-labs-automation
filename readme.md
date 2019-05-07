@@ -117,7 +117,7 @@ And you should obtain a listing like this one:
 
 # Prepare the classroom
 
-Open an elevated command prompt on the ClassRoom folder. It is important to be on this folder because it contains a json file with important data that the system will search for in the current folder. 
+Open an elevated command prompt on the ClassLab folder. It is important to be on this folder because it contains a json file with important data that the system will search for in the current folder. 
 
 Examine the labSettings.default.json file. It contains the name of the lab, the address space, the number of machines to create and other useful information. For example labPrefix is used to prefix all hyper-v objects with two letters to allow having multiple instances of the lab. If you want to change this file the recommend approach is to create a copy and name it **labSettings.user.json**.
 
