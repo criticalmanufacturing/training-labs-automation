@@ -18,7 +18,9 @@ $manifest = (Get-Content $manifestTemplate ) | ConvertFrom-Json
 
 For ($i=1; $i -le $numberOfLabMachines; $i++) {
     $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
-    $manifest.'Product.SystemName' = "CMF$($i.ToString('00'))"
+    $systemName = "CMF$($i.ToString('00'))"
+
+    $manifest.'Product.SystemName' = $systemName
     $manifest.'Product.Tenant.Name' = "CMF$($i.ToString('00'))"    
     
     Mount-LabIsoImage -IsoPath $productIso -ComputerName $machineName
@@ -43,4 +45,25 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
 
         .\tools\cmfdeploy.exe install CriticalManufacturing@6.4.0 -parameters c:\temp\manifest.json
     }
+
+    Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\Silverlight_x64.exe" -CommandLine "/q"
+    Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\ChromeStandaloneSetup64.exe" -CommandLine "/silent /install"
+
+    Invoke-LabCommand -ComputerName $machineName -ActivityName "Create Silverlight UI shortcut on $machineName" -ScriptBlock {
+        param([string] $systemName)
+        $Shell = New-Object -ComObject ("WScript.Shell")
+        $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\Silverlight UI.url")
+        $Favorite.TargetPath = "http://localhost:81/$($systemName)";
+        $Favorite.Save()
+    } -ArgumentList $systemName
+
+    Invoke-LabCommand -ComputerName $machineName -ActivityName "Create HTML UI shortcut on $machineName" -ScriptBlock {
+        param([string] $systemName)
+        $Shell = New-Object -ComObject ("WScript.Shell")
+        $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\HTML UI.lnk")
+        $Favorite.TargetPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+        $Favorite.Arguments = "http://localhost:82/";
+        $Favorite.Save()
+    }
 }
+

@@ -69,6 +69,20 @@ Then you need to place your ISO files in the LabSources folder (the drive letter
 explorer C:\LabSources\ISOs
 ```
 
+## Download dependencies:
+
+To use the Critical Manufacturing UIs from within the virtual machines the following dependencies are also required:
+
+- Microsoft Silverlight Runtime (Silverlight_x64.exe) available [here](http://go.microsoft.com/fwlink/?LinkID=229321).
+- Google Chrome Offline Installer available [here](https://www.google.com/intl/en/chrome/?standalone=1).
+
+For the sake of simplicy the system expects to find them on the same folder as the ISOs:
+
+```
+explorer C:\LabSources\ISOs
+```
+
+
 ## Get the training-labs-automation scripts
 
 Clone the training-labs-automation repo:
