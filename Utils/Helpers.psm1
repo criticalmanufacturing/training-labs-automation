@@ -11,3 +11,12 @@ function Convert-LongToNetworkAddress() {
 
     return (([math]::truncate($int / 16777216)).tostring() + "." + ([math]::truncate(($int % 16777216) / 65536)).tostring() + "." + ([math]::truncate(($int % 65536) / 256)).tostring() + "." + ([math]::truncate($int % 256)).tostring() ) 
 }
+
+
+function Create-DesktopShortcut() {
+    param([string]$shortCutName, [string]$url )
+    $Shell = New-Object -ComObject ("WScript.Shell")
+    $Favorite = $Shell.CreateShortcut(( Join-Path -Path $env:USERPROFILE -ChildPath "\Desktop\$($shortCutName)"))
+    $Favorite.TargetPath = $url;
+    $Favorite.Save()
+}
