@@ -6,7 +6,7 @@ The scripts are also useful for setting up testing scenarios and as a demonstrat
 
 # About the classroom virtual labs
 
-The best option to prepare a class with hands-on is to deliver a clean environment to each trainee. But creating a virtual machine for each student for a complex environment like ours manually can be a daunting task. With this set of scriptsthis option is not only viable but easy because it is automatic. In the end the lab will look like the next picture.
+The best option to prepare a class with hands-on is to deliver a clean environment to each trainee. But creating a virtual machine for each student for a complex environment like ours manually can be a daunting task. With this set of scripts this option is not only viable but easy because it is automatic. In the end the lab will look like the next picture.
 
 ![Virtual Lab Overview][lab-overview]
 
