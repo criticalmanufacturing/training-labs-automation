@@ -7,15 +7,21 @@ if (-Not (Test-Path -Path $labSettingsPath)) {
 
 $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 
-$ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
+$ComputerName = "$($labSettings.labPrefix)SQLSRV01"
 
-Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Configure Report Server' -ArgumentList $settings.sqlUser, $settings.sqlPassword -ScriptBlock {
+Invoke-LabCommand -ComputerName $computerName -ActivityName 'Configure Report Server' -ArgumentList $settings.sqlUser, $settings.sqlPassword -ScriptBlock {
     param([string]$sqlUser, [string]$sqlPassword)
 
     # Retrieve the current configuration
-    $configset = Get-WmiObject -namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" -class MSReportServer_ConfigurationSetting -ComputerName localhost
+    $configset = Get-WmiObject -namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" -class MSReportServer_ConfigurationSetting -ComputerName localhost -ErrorAction SilentlyContinue
+
+    While(!$configset) {
+        Write-Verbose "Could not obtain the WMI object for SSRS, retrying in 5 seconds" -Verbose
+        Start-Sleep -Seconds 5
+        $configset = Get-WmiObject -namespace "root\Microsoft\SqlServer\ReportServer\RS_SSRS\v14\Admin" -class MSReportServer_ConfigurationSetting -ComputerName localhost -ErrorAction SilentlyContinue
+    }
     
-    If (! $configset.IsInitialized) {
+    If (!$configset.IsInitialized) {
         # Get the ReportServer and ReportServerTempDB creation script
         [string]$dbscript = $configset.GenerateDatabaseCreationScript("ReportServer", 1033, $false).Script
 

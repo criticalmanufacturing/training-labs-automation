@@ -136,22 +136,6 @@ Configuration SQLInstall
 
             DependsOn            = '[SqlServerLogin]AddOdsSqlLogin'
         }
-
-        Package SSMS {
-            Ensure    = 'Present'
-            Name      = 'SSMS-Setup-ENU'
-            Path      = "c:\temp\$($node.SSMSInstallerFile)"
-            Arguments = '/install /passive /norestart'
-            ProductId = '00BE2F31-85B3-414F-8BAD-01E24FB17541'
-        }
-
-        Package RS {
-            Ensure    = 'Present'
-            Name      = 'SQLServerReportingServices'
-            Path      = "c:\temp\$($node.RSInstallerFile)"
-            Arguments = '/quiet /norestart /IAcceptLicenseTerms /Edition=Eval'
-            ProductId = 'FC32DB66-DA3A-4521-A6F3-B75491663793'
-        }
     }
 }
 
@@ -162,7 +146,6 @@ $adminCredential = New-Object -TypeName System.Management.Automation.PSCredentia
 $saCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'sa', $password 
 $sqlUserCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $settings.sqlUser, $sqlPassword
 
-
 $ConfigurationData = @{
     AllNodes                    = @(
         @{
@@ -170,11 +153,9 @@ $ConfigurationData = @{
             PSDscAllowPlainTextPassword = $true
             PSDscAllowDomainUser        = $true  
             SqlServiceCredential        = $adminCredential
-            SAPassword                  = $saCredential
-            SSMSInstallerFile           = $settings.ssmsInstallerFile
-            RSInstallerFile             = $settings.reportingServicesInstallerFile
+            SAPassword                  = $saCredential            
             SQLUserName                 = $settings.sqlUser
-            SQLUserCredential           = $sqlUserCredential           
+            SQLUserCredential           = $sqlUserCredential                 
         }
     )
     PSDscAllowPlainTextPassword = $True
@@ -190,6 +171,9 @@ $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 
 $ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
 
-Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) -ConfigurationData $ConfigurationData -ComputerName $ComputerNames
+Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) -ConfigurationData $ConfigurationData -ComputerName $ComputerNames -Wait
 
-Restart-LabVM -ComputerName $ComputerNames
+Install-LabSoftwarePackage -ComputerName $ComputerNames -Path "$labSources\ISOs\$($settings.ssmsInstallerFile)" -CommandLine "/install /passive /norestart"
+Install-LabSoftwarePackage -ComputerName $ComputerNames -Path "$labSources\ISOs\$($settings.reportingServicesInstallerFile)" -CommandLine "/quiet /norestart /IAcceptLicenseTerms /Edition=Eval"
+
+Restart-LabVM -ComputerName $ComputerNames -Wait

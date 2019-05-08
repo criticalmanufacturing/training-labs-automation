@@ -28,7 +28,7 @@ You start in a Windows machine with HyperV installed where you have admin rights
 
 Start by installing the AutomatedLab framework. The AllowCluber flag is required because this module needs to enhance some builtin cmdlets to redirect verbose and debug messages into a test log. 
 
-You also need to install SqlServerDsc. This module is used by the scripts to prepare SQL Server installations.
+You also need to install SqlServerDsc. These modules are used by the scripts to prepare SQL Server installations.
 
 ``` PowerShell
 Install-Module AutomatedLab -AllowClobber
