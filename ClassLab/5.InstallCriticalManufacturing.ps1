@@ -21,7 +21,10 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
     $systemName = "CMF$($i.ToString('00'))"
 
     $manifest.'Product.SystemName' = $systemName
-    $manifest.'Product.Tenant.Name' = "CMF$($i.ToString('00'))"    
+    $manifest.'Product.Tenant.Name' = "CMF$($i.ToString('00'))"
+    $manifest.'Product.ApplicationServer.Address' = $machineName    
+    $manifest.'Product.Gateway.Address' = $machineName
+    $manifest.'Product.LoadBalancer.Address' = $machineName    
     
     Mount-LabIsoImage -IsoPath $productIso -ComputerName $machineName
     $ComputerNames += $machineName
