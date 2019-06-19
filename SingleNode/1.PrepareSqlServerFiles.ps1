@@ -1,3 +1,4 @@
+
 $UtilsPath = Join-Path -Path $PSScriptRoot -ChildPath '..\Utils';
 Import-Module $UtilsPath\Helpers.psm1
 
@@ -5,7 +6,7 @@ $labSourcesLocation = Get-LabSourcesLocation
 $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
 $labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
 
-$ComputerNames = @("$($labSettings.labPrefix)SQLSRV01")
+$ComputerNames = @("$($labSettings.labPrefix)APPSRV01")
 
 Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.sqlServerIsoFile)" ) -ComputerName $ComputerNames -DestinationFolderPath C:\Temp
 Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($settings.ssmsInstallerFile)" ) -ComputerName $ComputerNames -DestinationFolderPath C:\Temp
