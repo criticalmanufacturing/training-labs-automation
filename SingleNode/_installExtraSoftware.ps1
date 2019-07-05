@@ -13,9 +13,3 @@ $systemName = "CMF"
 
 Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\node-v8.16.0-x64.msi" -CommandLine "/qn"
 Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\VSCodeUserSetup-x64-1.35.1.exe" -CommandLine "/VERYSILENT /MERGETASKS=!runcode"
-
-
-# npm install --global --production windows-build-tools
-# mkdir c:\verdaccio
-
-
