@@ -17,6 +17,7 @@ $labSettings = Get-LabSettings -labConfigRoot $labConfigRoot
 $labName = $labSettings.labName
 $labPrefix = $labSettings.labPrefix
 $addressSpace = $labSettings.addressSpace
+$numberOfLabMachines = $labSettings.numberOfLabMachines
 
 $vmFolder = $settings.virtualMachinesFolder
 $guiServerImage = $settings.serverWindowsOperatingSystem
@@ -43,9 +44,7 @@ Add-LabVirtualNetworkDefinition -Name 'Default Switch' -HyperVProperties @{ Swit
 $PSDefaultParameterValues = @{
     'Add-LabMachineDefinition:Network' = "$labPrefix$labName"
     'Add-LabMachineDefinition:DomainName' = $domain
-    'Add-LabMachineDefinition:MinMemory' = 512MB
-    'Add-LabMachineDefinition:Memory' = 512MB
-    'Add-LabMachineDefinition:MaxMemory' = 8192MB
+    'Add-LabMachineDefinition:Memory' = 1GB
     'Add-LabMachineDefinition:OperatingSystem' = $guiServerImage
 }
 
