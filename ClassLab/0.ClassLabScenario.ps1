@@ -12,7 +12,7 @@ Import-Module $UtilsPath\Helpers.psm1
 $labConfigRoot = $PSScriptRoot
 
 $settings = (Get-Content (Join-Path -Path $labConfigRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
-$labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
+$labSettings = Get-LabSettings -labConfigRoot $labConfigRoot
 
 $labName = $labSettings.labName
 $labPrefix = $labSettings.labPrefix
@@ -62,9 +62,6 @@ $PSDefaultParameterValues = @{
 # domain controller
 ######################################################
 
-######################################################
-# add network
-######################################################
 Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC -IpAddress $dcIpAddress
 
 ######################################################

@@ -1,7 +1,11 @@
+$UtilsPath = Join-Path -Path $PSScriptRoot -ChildPath '..\Utils';
+Import-Module $UtilsPath\Helpers.psm1
 
-$sqlServers = @("SFSQLSRV01", "SFSQLSRV02")
 $labSourcesLocation = Get-LabSourcesLocation
 $settings = (Get-Content (Join-Path -Path $PSScriptRoot -ChildPath '..\settings.user.json') ) | ConvertFrom-Json
+$labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
+
+$sqlServers = @("$($labSettings.labPrefix)SQLSRV01", "$($labSettings.labPrefix)SQLSRV02")
 
 foreach ($sqlServer in $sqlServers)
 {

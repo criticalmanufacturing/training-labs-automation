@@ -1,0 +1,7 @@
+{
+    "labName" : "SimpleFarmLab",
+    "addressSpace": "192.168.90.0/24",
+    "labPrefix": "SF",
+    "numberOfLabMachines": 3,
+    "cmfIsoName": "Critical Manufacturing 6.4.0.iso"
+}
