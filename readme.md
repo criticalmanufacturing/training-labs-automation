@@ -33,6 +33,7 @@ You also need to install SqlServerDsc. These modules are used by the scripts to 
 ``` PowerShell
 Install-Module AutomatedLab -AllowClobber
 Install-Module SqlServerDsc
+Install-Module -Name xWebAdministration
 ```
 
 Because these modules are coming from PSGalery the system will prompt you if you want to proceed:

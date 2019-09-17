@@ -1,7 +1,11 @@
 {
-    "labName" : "ClassRoomLab",
-    "addressSpace": "192.168.70.0/24",
-    "labPrefix": "CR",
-    "numberOfLabMachines": 8,
-    "cmfIsoName": "Critical Manufacturing 6.4.0.iso"
+    "labName" : "ClassLab",
+    "addressSpace": "192.168.72.0/24",
+    "labPrefix": "CL",
+    "numberOfLabMachines": 13,
+    "cmfIsoName": "Critical Manufacturing 7.0.1.iso",
+	"cmfPackageToInstall": "CriticalManufacturing@7.0.1",
+    "cmfParametersFile": "700.json",
+    "cmfLicenseId": "<LICENSE_ID_HERE>",
+    "cmfToken": "<PORTAL_ACCESS_TOKEN"
 }

@@ -43,14 +43,15 @@ Add-LabDomainDefinition -Name $domain -AdminUser $user -AdminPassword $password
 ######################################################
 # setup networking
 ######################################################
-Add-LabVirtualNetworkDefinition -Name "$labPrefix$labName" -AddressSpace $addressSpace # -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'Ethernet' }
+$adapterName="$labPrefix$labName"
+Add-LabVirtualNetworkDefinition -Name "$adapterName" -AddressSpace $addressSpace # -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'Ethernet' }
+Add-LabVirtualNetworkDefinition -Name 'Default Switch' -HyperVProperties @{ SwitchType = 'External'; AdapterName = "$($adapterName)Internet" }
 
 ######################################################
 #defining default parameter values, as these ones are the same for all the machines
 ######################################################
 
 $PSDefaultParameterValues = @{
-    'Add-LabMachineDefinition:Network' = "$labPrefix$labName"
     'Add-LabMachineDefinition:DomainName' = $domain
     'Add-LabMachineDefinition:Memory' = 1GB
     'Add-LabMachineDefinition:OperatingSystem' = $guiServerImage
@@ -58,11 +59,13 @@ $PSDefaultParameterValues = @{
     'Add-LabMachineDefinition:DnsServer1'= "$dcIpAddress"
 }
 
+
+
 ######################################################
 # domain controller
 ######################################################
 
-Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC -IpAddress $dcIpAddress
+Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC -IpAddress $dcIpAddress -Network $adapterName
 
 ######################################################
 # add needed machines
@@ -72,7 +75,10 @@ Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC -IpAddress $dcIp
 
 $ipNumber = $base + 10
 $ipAddress = Convert-LongToNetworkAddress $ipNumber
-Add-LabMachineDefinition -Name "$($labPrefix)SQLSRV01" -MinMemory 1GB -MaxMemory 4GB -IpAddress $ipAddress
+$netAdapter = @()
+$netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch "$adapterName" -Ipv4Address $ipAddress
+$netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch 'Default Switch' -UseDhcp
+Add-LabMachineDefinition -Name "$($labPrefix)SQLSRV01" -MinMemory 1GB -MaxMemory 4GB -NetworkAdapter $netAdapter
 
 # add the app servers
 
@@ -80,10 +86,12 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
     $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
     $ipNumber = $base + 10 + $i
     $ipAddress = Convert-LongToNetworkAddress $ipNumber
-
+    $netAdapter = @()
+    $netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch "$adapterName" -Ipv4Address $ipAddress
+    $netAdapter += New-LabNetworkAdapterDefinition -VirtualSwitch 'Default Switch' -UseDhcp
     Write-Host "Adding machine $machineName with ip $ipAddress"
 
-    Add-LabMachineDefinition -Name $machineName  -MinMemory 1GB -MaxMemory 4GB -IpAddress $ipAddress
+    Add-LabMachineDefinition -Name $machineName  -MinMemory 1GB -MaxMemory 4GB -NetworkAdapter $netAdapter
 }
 
 # Execute it

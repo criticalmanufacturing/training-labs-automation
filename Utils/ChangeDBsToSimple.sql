@@ -1,0 +1,1 @@
+select 'alter database ['+name+'] set recovery simple' from master.sys.databases where database_id > 4 and state_desc = 'online'

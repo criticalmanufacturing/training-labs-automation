@@ -13,7 +13,7 @@ $ComputerNames = @()
 
 $productIso = Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($labSettings.cmfIsoName)"
 
-$manifestTemplate = Join-Path -Path $labSourcesLocation -ChildPath "ISOs\template.json"
+$manifestTemplate = Join-Path -Path $labSourcesLocation -ChildPath "ISOs\$($labSettings.cmfParametersFile)"
 $manifest = (Get-Content $manifestTemplate ) | ConvertFrom-Json
 
 For ($i=1; $i -le $numberOfLabMachines; $i++) {
@@ -26,6 +26,7 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
     $manifest.'Product.Gateway.Address' = $machineName
     $manifest.'Product.LoadBalancer.Address' = $machineName    
     
+    Dismount-LabIsoImage -ComputerName $machineName
     Mount-LabIsoImage -IsoPath $productIso -ComputerName $machineName
     $ComputerNames += $machineName
 
@@ -43,11 +44,27 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
     
     Copy-LabFileItem -Path $file -ComputerName $machineName -DestinationFolderPath C:\Temp 
 
+    $packageToInstall = "$($labSettings.cmfPackageToInstall)"
+    $licenseId = "$($labSettings.cmfLicenseId)"
+    $refreshToken = "$($labSettings.cmfToken)"
     Invoke-LabCommand -ComputerName $machineName -ActivityName "Installing Critical Manufacturing on $machineName" -ScriptBlock {
+        param([string] $packageToInstall, [string] $licenseId, [string] $refreshToken)
+        # Check Internet connection
+        ping 8.8.8.8
+        # Move to ISO
         cd d:\
 
-        .\tools\cmfdeploy.exe install CriticalManufacturing@6.4.0 -parameters c:\temp\manifest.json
-    }
+        # Delete log file
+        if (Test-Path "C:\share\log.txt") { Remove-Item "C:\share\log.txt" }
+
+        #Install
+        $Output = (.\tools\cmfdeploy.exe install $packageToInstall --logFileLocation="C:\share" --parameters="c:\temp\manifest.json" --licenseId="$licenseId" --token="$refreshToken") | Out-String
+        if ($Output.Contains("Installation failed")) {
+            Write-Error $Output
+        } else {
+            Write-Host $Output
+        }
+    } -ArgumentList $packageToInstall,$licenseId,$refreshToken
 
     Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\Silverlight_x64.exe" -CommandLine "/q"
     Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\ChromeStandaloneSetup64.exe" -CommandLine "/silent /install"
@@ -56,16 +73,23 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
         param([string] $systemName)
         $Shell = New-Object -ComObject ("WScript.Shell")
         $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\Silverlight UI.url")
-        $Favorite.TargetPath = "http://localhost:81/$($systemName)";
+        $Favorite.TargetPath = "http://localhost:80/Silverlight";
         $Favorite.Save()
     } -ArgumentList $systemName
 
     Invoke-LabCommand -ComputerName $machineName -ActivityName "Create HTML UI shortcut on $machineName" -ScriptBlock {
-        param([string] $systemName)
         $Shell = New-Object -ComObject ("WScript.Shell")
         $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\HTML UI.lnk")
         $Favorite.TargetPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-        $Favorite.Arguments = "http://localhost:82/";
+        $Favorite.Arguments = "http://localhost:80/";
+        $Favorite.Save()
+    }
+		
+	Invoke-LabCommand -ComputerName $machineName -ActivityName "Create Help shortcut on $machineName" -ScriptBlock {
+        $Shell = New-Object -ComObject ("WScript.Shell")
+        $Favorite = $Shell.CreateShortcut($env:USERPROFILE + "\Desktop\Documentation UI.lnk")
+        $Favorite.TargetPath = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+        $Favorite.Arguments = "http://localhost:80/Help";
         $Favorite.Save()
     }
 }
