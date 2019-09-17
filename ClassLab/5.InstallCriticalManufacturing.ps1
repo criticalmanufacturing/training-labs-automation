@@ -50,7 +50,7 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
     Invoke-LabCommand -ComputerName $machineName -ActivityName "Installing Critical Manufacturing on $machineName" -ScriptBlock {
         param([string] $packageToInstall, [string] $licenseId, [string] $refreshToken)
         # Check Internet connection
-        ping 8.8.8.8
+        ping portal.criticalmanufacturing.com
         # Move to ISO
         cd d:\
 

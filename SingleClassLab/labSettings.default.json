@@ -1,0 +1,12 @@
+{
+    "labName" : "SingleClassLab",
+    "addressSpace": "192.168.73.0/24",
+    "labPrefix": "SC",
+    "labVersion": "701",
+    "numberOfHosts": 12,
+    "cmfIsoName": "Critical Manufacturing 7.0.1.iso",
+	"cmfPackageToInstall": "CriticalManufacturing@7.0.1",
+    "cmfParametersFile": "700.json",
+    "cmfLicenseId": "<LICENSE_ID_HERE>",
+    "cmfToken": "<PORTAL_ACCESS_TOKEN"
+}
