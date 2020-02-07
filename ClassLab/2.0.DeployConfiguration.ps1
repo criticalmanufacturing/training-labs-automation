@@ -84,6 +84,7 @@ $adminCredential = New-Object -TypeName System.Management.Automation.PSCredentia
 $saCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'sa', $password 
 $sqlUserCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $settings.sqlUser, $sqlPassword
 $startingMachineNumber = $labSettings.startingMachineNumber
+$numberOfLabMachines = $labSettings.numberOfLabMachines
 
 $ConfigurationData = @{
     AllNodes                    = @(
@@ -101,6 +102,7 @@ $ConfigurationData = @{
     PSDscAllowDomainUser        = $true      
 }
 
+$ComputerNames = @()
 $labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
 if ($startingMachineNumber -eq 1) {
 
@@ -108,9 +110,8 @@ if ($startingMachineNumber -eq 1) {
 
     Invoke-LabDscConfiguration -Configuration (Get-Command -Name SQLInstall) -ConfigurationData $ConfigurationData -ComputerName $ComputerNames -Wait
     Install-LabSoftwarePackage -ComputerName $ComputerNames -Path "$labSources\ISOs\$($settings.reportingServicesInstallerFile)" -CommandLine "/quiet /norestart /IAcceptLicenseTerms /Edition=Eval"
-} else {
-    $ComputerNames = @()
 }
+
 # Add app servers to include management studio
 
 For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {

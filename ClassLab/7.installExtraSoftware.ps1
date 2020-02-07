@@ -18,3 +18,20 @@ For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {
     Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\VSCodeSetup-x64-1.40.0.exe" -CommandLine "/VERYSILENT /MERGETASKS=!runcode"
     Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\vs_community.exe" -CommandLine "/q"
 }
+
+# cleanup files
+$ComputerNames = @()
+
+For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {
+    $machineName = "$($labPrefix)SRV$($i.ToString('00'))"
+    $ComputerNames += $machineName
+}
+
+Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Remove installer files' -ScriptBlock {
+    Remove-Item "C:\ChromeStandaloneSetup64.exe"
+    Remove-Item "C:\npp.7.8.1.Installer.x64.exe"
+    Remove-Item "C:\Silverlight_x64.exe"
+    Remove-Item "C:\SSMS-Setup-ENU.exe"
+    # Remove-Item "C:\vs_community.exe" # installation may not yet be complete so do not remote it
+    Remove-Item "C:\VSCodeSetup-x64-1.40.0.exe"
+}

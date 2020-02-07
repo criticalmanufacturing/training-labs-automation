@@ -8,6 +8,7 @@ $labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
 $startingMachineNumber = $labSettings.startingMachineNumber
 $certificate = $labSettings.certificateFile
 $certificatePassword = $labSettings.certificatePassword
+$numberOfLabMachines = $labSettings.numberOfLabMachines
 
 $ComputerNames = @()
 
@@ -32,6 +33,6 @@ Invoke-LabCommand -ComputerName $ComputerNames  -ActivityName 'Create certificat
 
     Import-PfxCertificate -Exportable -Password (ConvertTo-SecureString "$certificatePassword" -AsPlainText -force) -CertStoreLocation "cert:\LocalMachine\My" -FilePath "C:\Temp\$certificate"
     Import-PfxCertificate -Exportable -Password (ConvertTo-SecureString "$certificatePassword" -AsPlainText -force) -CertStoreLocation "cert:\LocalMachine\Root" -FilePath "C:\Temp\$certificate"    
-} -ArgumentList $adminPassword
+} -ArgumentList $certificate, $certificatePassword
 
 # To create new cert: New-SelfSignedCertificate -DnsName "*.cmflab.local" -CertStoreLocation "cert:\LocalMachine\My" -FriendlyName cmflablocal 

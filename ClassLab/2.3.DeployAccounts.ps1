@@ -8,6 +8,7 @@ $shortDomain = $settings.shortDomain
 
 $labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
 $startingMachineNumber = $labSettings.startingMachineNumber
+$numberOfLabMachines = $labSettings.numberOfLabMachines
 
 $ComputerNames = @("$($labSettings.labPrefix)DC")
 
