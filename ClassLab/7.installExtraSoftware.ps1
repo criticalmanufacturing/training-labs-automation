@@ -8,14 +8,13 @@ if(-Not (Test-Path -Path $labSettingsPath)) {
 $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 $labPrefix = $labSettings.labPrefix
 $numberOfLabMachines = $labSettings.numberOfLabMachines
+$startingMachineNumber = $labSettings.startingMachineNumber
 
-$ComputerNames = @()
-
-
-For ($i=1; $i -le $numberOfLabMachines; $i++) {
-    $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
+For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {
+    $machineName = "$($labPrefix)SRV$($i.ToString('00'))"
     $systemName = "CMF$($i.ToString('00'))"
     
+    Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\npp.7.8.1.Installer.x64.exe" -CommandLine "/S"
+    Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\VSCodeSetup-x64-1.40.0.exe" -CommandLine "/VERYSILENT /MERGETASKS=!runcode"
     Install-LabSoftwarePackage -ComputerName $machineName -Path "$labSources\ISOs\vs_community.exe" -CommandLine "/q"
 }
-

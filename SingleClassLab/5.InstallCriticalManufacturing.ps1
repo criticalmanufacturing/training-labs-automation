@@ -69,7 +69,7 @@ For ($i=1; $i -le $numberOfLabMachines; $i++) {
         cd d:\
 
         # Delete log file
-        # if (Test-Path "C:\share\log.txt") { Remove-Item "C:\share\log.txt" }
+        if (Test-Path "C:\share\log.txt") { Remove-Item "C:\share\log.txt" }
 
         #Install
         $Output = (.\tools\cmfdeploy.exe install $packageToInstall --logFileLocation="C:\share" --parameters="c:\Temp\$($manifestFileName)" --licenseId="$licenseId" --token="$refreshToken") | Out-String

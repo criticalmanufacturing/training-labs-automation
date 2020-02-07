@@ -1,0 +1,14 @@
+{
+    "labName" : "ClassLab",
+    "addressSpace": "192.168.70.0/24",
+    "labPrefix": "T",
+    "numberOfLabMachines": 25,
+    "startingMachineNumber": 1,
+    "certificateFile" : "<CERTIFICATE_FILE>",
+    "certificatePassword" : "<CERTIFICATE_PASSWORD>",
+    "cmfIsoName": "<CMF_ISO_NAME>",
+	"cmfPackageToInstall": "CriticalManufacturing@7.1.1",
+    "cmfParametersFile": "parameters.json",
+    "cmfLicenseId": "<CMF_LICENSE_ID>",
+    "cmfToken": "<CMF_PORTAL_TOKEN>"
+}

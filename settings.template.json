@@ -3,6 +3,7 @@
     "password" : "<the password>",
     "domain" : "<the domain>",
     "shortDomain" : "<the short name for the domain that will prefix user names",
+    "shortDomainUpperCase" : "<the short name for the domain that will prefix user names in uppercase",
     "headlessWindowsServerOperatingSystem" : "<the name of the headless Windows Server image to use>",
     "serverWindowsOperatingSystem": "<the name of the headless Windows Service image to use>",
     "clientWindowsOperatingSystem": "<the name of the Windows desktop image to use>",

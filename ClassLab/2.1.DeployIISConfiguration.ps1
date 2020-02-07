@@ -91,11 +91,12 @@ $ConfigurationData = @{
 $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 $labPrefix = $labSettings.labPrefix
 $numberOfLabMachines = $labSettings.numberOfLabMachines
+$startingMachineNumber = $labSettings.startingMachineNumber
 
 $ComputerNames = @()
 
-For ($i=1; $i -le $numberOfLabMachines; $i++) {
-    $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
+For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {
+    $machineName = "$($labPrefix)SRV$($i.ToString('00'))"
     $ComputerNames += $machineName
 }
 

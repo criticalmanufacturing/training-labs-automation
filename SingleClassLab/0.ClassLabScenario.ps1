@@ -65,7 +65,7 @@ $PSDefaultParameterValues = @{
 # domain controller
 ######################################################
 
-Add-LabMachineDefinition -Name "$($labPrefix)DC1" -Roles RootDC -IpAddress $dcIpAddress -Network $adapterName
+Add-LabMachineDefinition -Name "$($labPrefix)DC" -Roles RootDC -IpAddress $dcIpAddress -Network $adapterName
 
 ######################################################
 # add needed machines

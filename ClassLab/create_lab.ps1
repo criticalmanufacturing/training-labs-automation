@@ -2,6 +2,10 @@
 . .\1.PrepareSqlServerFiles.ps1
 . .\2.0.DeployConfiguration.ps1
 . .\2.1.DeployIISConfiguration.ps1
+. .\2.2.DeployCertificate.ps1
+. .\2.3.DeployAccounts.ps1
 . .\3.ConfigureReportServer.ps1
 . .\4.CreateSharedFolders.ps1
 . .\5.InstallCriticalManufacturing.ps1
+. .\6.PostInstalltasks.ps1
+. .\7.installExtraSoftware.ps1

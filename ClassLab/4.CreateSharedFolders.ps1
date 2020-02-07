@@ -6,16 +6,31 @@ $labSettings = Get-LabSettings -labConfigRoot $PSScriptRoot
 
 $labPrefix = $labSettings.labPrefix
 $numberOfLabMachines = $labSettings.numberOfLabMachines
+$startingMachineNumber = $labSettings.startingMachineNumber
 
-$ComputerNames = @("$($labPrefix)SQLSRV01")
+$ComputerNames = @()
 
-For ($i=1; $i -le $numberOfLabMachines; $i++) {
-    $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
+For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {
+    $machineName = "$($labPrefix)SRV$($i.ToString('00'))"
     $ComputerNames += $machineName
 }
 
 Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Create Share' -ScriptBlock {
-    New-Item "C:\Share" -Type Directory -Force
-    New-Item "C:\Share\EFC" -Type Directory -Force
-    net share Share=C:\Share /GRANT:EVERYONE`,FULL
+    New-Item "C:\ProductShare" -Type Directory -Force
+    New-Item "C:\ProductShare\EFC" -Type Directory -Force
+    New-Item "C:\ProductShare\Documents" -Type Directory -Force
+    New-Item "C:\ProductShare\Documents\Permanent" -Type Directory -Force
+    New-Item "C:\ProductShare\Documents\Temp" -Type Directory -Force
+    New-Item "C:\ProductShare\Documents\Archive" -Type Directory -Force
+
+    net share ProductShare=C:\ProductShare /GRANT:EVERYONE`,FULL
+}
+
+$ComputerNames = @("$($labPrefix)SQL")
+
+if ($startingMachineNumber -eq 1) {
+    Invoke-LabCommand -ComputerName $computerNames -ActivityName 'Create SQL share' -ScriptBlock {
+        New-Item "D:\share" -Type Directory -Force
+        net share share=D:\share /GRANT:EVERYONE`,FULL
+    }
 }

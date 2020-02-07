@@ -8,12 +8,13 @@ if(-Not (Test-Path -Path $labSettingsPath)) {
 $labSettings = (Get-Content $labSettingsPath ) | ConvertFrom-Json
 $labPrefix = $labSettings.labPrefix
 $numberOfLabMachines = $labSettings.numberOfLabMachines
+$startingMachineNumber = $labSettings.startingMachineNumber
 
 $ComputerNames = @()
 
 
-For ($i=1; $i -le $numberOfLabMachines; $i++) {
-    $machineName = "$($labPrefix)APPSRV$($i.ToString('00'))"
+For ($i=$startingMachineNumber; $i -le $numberOfLabMachines; $i++) {
+    $machineName = "$($labPrefix)SRV$($i.ToString('00'))"
     $systemName = "CMF$($i.ToString('00'))"
 
     Copy-LabFileItem -Path ( Join-Path -Path $labSourcesLocation -ChildPath "ISOs\PartnersTrainingCoreMasterData.xlsx" ) -ComputerName $machineName -DestinationFolderPath C:\Temp
